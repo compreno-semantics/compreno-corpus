@@ -95,7 +95,7 @@ In most cases, the ABBYY Compreno model treats parts of composite words as separ
 
 ## The conversion of parts of speech and grammatical features
 
-One can see the information on parts of speech, grammatical categories and features in a separate [file](https://github.com/comreno-semantics/compreno-corpus/blob/master/Comr2UD_Morth.md).
+One can see the information on parts of speech, grammatical categories and features in a separate [file](https://github.com/compreno-semantics/compreno-corpus/blob/main/Comr2UD_Morth.md).
 
 ## The conversion of the syntactic heads
 
