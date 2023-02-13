@@ -1,24 +1,46 @@
-# compreno-corpus
+# The ABBYY Compreno corpus
 
-A corpus with three level markup
+A corpus with full three language level markup
 
-<a href="https://creativecommons.org/licenses/by-nc/4.0/"><img src="https://img.shields.io/static/v1?label=license&message=CC-BY-NC-4.0&color=green"/></a>
 
-# Introduction
+# Contents
+1. [Dataset](#dataset)
+2. [Corpus Markup](#corpus-markup)
+3. [The conversion of the Compreno markup in the UD format](#the-conversion-of-the-compreno-markup-in-the-ud-format)<br />
+3.1 [Tokenization](#tokenization )<br />
+3.2 [The conversion of parts of speech and grammatical features](#the-conversion-of-parts-of-speech-and-grammatical-features)<br />
+3.3 [The conversion of the syntactic heads](#the-conversion-of-the-syntactic-heads)<br />
+3.4 [The conversion of the dependent constituents](#the-conversion-of-the-dependent-constituents)<br />
+4. [Main problems and their solutions](#main-problems-and-their-solutions)
 
-Here we present a corpus of texts which contains markup of three language levels: morphology, syntax and semantics. The size of the corpus is approximately 360 000 tokens (without counting punctuation). The markup format is an adaptation of UD (Universal Dependencies) format and Compreno semantic format.
+# Dataset
+Our corpus consists of news from the [NewsRu.Com](https://abbyyihq-my.sharepoint.com/:u:/g/personal/vladimir_dobrovolskiy_abbyy_com/EfDkvviTivNCjWVkL7WhfeIBSnZdz0yRhssDbGOjHm2kpA?e=CiDK8x) dataset, created during building the [RuCoCo](https://github.com/vdobrovolskii/rucoco) corpus &ndash; the corpus with the coreference annotation.
 
-At the first stage, the corpus was annotated with the Compreno semantic markup: we obtained the markup automatically with the help of the Compreno parser and checked it manually afterwards. Nevertheless, the number of categories in the full Compreno markup is rather big: more than 200,000 semantic classes and more than 330 semantic roles, which seems too much both for the machine learning of the semantic parsers on the dataset of the given volume and for a number of application tasks the corpus can be used for.
+The dataset contains 3 markup levels:
 
-To make the formalism simpler, we decided to use so-called generalized semantic classes, which denote not exactly the meaning of a word but are hyperonyms for larger word classes. For instance, all words with motion semantics belong to the hyperonym class MOTION, and all words denoting humans – in the semantic class HUMAN.
+- morphological,
+- syntactic,
+- semantic.
 
-More than that, we reduced the number of the semantic roles. For example, full Compreno markup suggests different roles for different characteristic dependencies (that is, weight, speed, size, and so on). In the generalized variant, all such characteristics correspond to one characteristical role. Or, the Compreno model has several slots for temporal relations: Time (‘вчера – yesterday, через два дня – in two days’), Time_Situation (‘когда все приедут – when everybody comes’), Time_Being (‘при Иване Грозном – in times of Ivan the Terrible’). In the generalized presentation, all these roles correspond to only one Time slot.
+We have chosen the UD markup format as the one which seems the most popular now, however, it does not suggest semantic information. Full semantic markup can be found in the Compreno markup format, which includes word meanings (defined in terms of semantic classes &ndash; semantic fields, provided for each word meaning), and semantic relations between them (which as marked as deeps slots, or semantic roles).
 
-As a result, the number of the hyperonym semantic classes used in the markup was reduced to 1085 classes, and the number of the semantic roles – to 143 slots.
+To obtain the corpus in the UD format enriched by the semantic markup, we have organized the project pipeline as follows. 
+
+
+# Corpus Markup
+
+At the first stage, the corpus was annotated with the ABBYY Compreno semantic markup: we obtained the markup automatically with the help of the ABBYY Compreno parser and checked it manually afterwards. Nevertheless, the number of categories in the full ABBYY Compreno markup is rather big: more than 200,000 semantic classes and more than 330 semantic roles, which seems too much both for the machine learning of the semantic parsers on the dataset of the given volume and for a number of application tasks the corpus can be used for.
+
+To make the formalism simpler, we decided to use so-called generalized semantic classes, which denote not exactly the meaning of a word but are hyperonyms for larger word classes. For instance, all words with motion semantics belong to the hyperonym class MOTION, and all words denoting humans &ndash; in the semantic class HUMAN.
+
+More than that, we reduced the number of the semantic roles. For example, full ABBYY Compreno markup suggests different roles for different characteristic dependencies (that is, weight, speed, size, and so on). In the generalized variant, all such characteristics correspond to one characteristical role. Or, the Compreno model has several slots for temporal relations: Time (‘вчера &ndash; yesterday, через два дня &ndash; in two days’), Time\_Situation (‘когда все приедут &ndash; when everybody comes’), Time\_Being (‘при Иване Грозном &ndash; in times of Ivan the Terrible’). In the generalized presentation, all these roles correspond to only one Time slot.
+
+As a result, the number of the hyperonym semantic classes used in the markup was reduced to 1085 classes, and the number of the semantic roles &ndash; to 143 slots.
+
 
 # The conversion of the Compreno markup in the UD format
 
-The Compreno markup looks as follows. The boundaries of the constituents are marked with square brackets which are put around the dependent nodes. Each token is provided with both its semantic class and the semantic relation with its head:
+The ABBYY Compreno markup looks as follows. The boundaries of the constituents are marked with square brackets which are put around the dependent nodes. Each token is provided with both its semantic class and the semantic relation with its head:
 
 >Обычно бюджет ко второму чтению готовится непосредственно в Думе: депутаты корректируют правительственные планы.
 >‘Usually the budget is prepared for the second reading directly in the Duma: the deputies update the government plans.’
@@ -29,7 +51,7 @@ The Compreno markup looks as follows. The boundaries of the constituents are mar
 
 The markup can also be provided with surface, or syntactic, roles, coreference and non-tree links, however, the purpose of the given dataset was only the semantic markup. The only surface slot mentioned in the markup is the $Dislocation slot (the $ sign denotes surface slots in the model) &ndash; it is the slot for the dislocated constituents (dislocated constituents are the ones that syntactically depend on one core, while semantically &ndash; on the other core).
 
-Unlike the UD format, the bracket format does not allow one to indicate morphological information in the markup, that is, parts of speech and grammatical features. Nevertheless, this information is available as well: the Compreno parser builds the parsing trees for the sentences, where each node is provided with full grammatical and semantic information, namely, morphological and syntactic features (grammemes), syntactic and semantic relations, semantic classes, non-tree links, and so on:
+Unlike the UD format, the bracket format does not allow one to indicate morphological information in the markup, that is, parts of speech and grammatical features. Nevertheless, this information is available as well: the ABBYY Compreno parser builds the parsing trees for the sentences, where each node is provided with full grammatical and semantic information, namely, morphological and syntactic features (grammemes), syntactic and semantic relations, semantic classes, non-tree links, and so on:
 
 ![](img/Aspose.Words.100d08f2-5e68-4f73-8006-21098ad50dcb.005.png)
 
@@ -37,7 +59,7 @@ As an illustration, let us show the morphological grammemes for the node `"го�
 
 ![](img/Aspose.Words.100d08f2-5e68-4f73-8006-21098ad50dcb.006.png)
 
-During the conversion of the Compreno markup into the UD format, all the necessary information is taken from the parsing trees. After it, the markup looks as follows:
+During the conversion of the ABBYY Compreno markup into the UD format, all the necessary information is taken from the parsing trees. After it, the markup looks as follows:
 
 ```
 # text = На месте погибли 25 &ndash; летний Тато Карепов , 43 &ndash; летняя Наталья Карепова и 60 &ndash; летняя Шура Таанани.
@@ -58,7 +80,7 @@ During the conversion of the Compreno markup into the UD format, all the necessa
 15	.	.	PUNCT	_	_	3	punct	_	_
 ```
 
-The final UD-markup includes three levels: morphological, syntactic, and semantic. The UD presentation has its own morphology and syntax, therefore, the corresponding information in the Compreno model is converted into the UD format. As far as the semantic relations are concerned, the UD format does not have the semantic level, so the information about the SCs and the deep slots is added to the UD markup in the way it is presented in Compreno.
+The final UD-markup includes three levels: morphological, syntactic, and semantic. The UD presentation has its own morphology and syntax, therefore, the corresponding information in the ABBYY Compreno model is converted into the UD format. As far as the semantic relations are concerned, the UD format does not have the semantic level, so the information about the SCs and the deep slots is added to the UD markup in the way it is presented in Compreno.
 
 Now let us examine the conversion of morphology and syntax in more detail.
 
@@ -69,15 +91,15 @@ Unlike the UD format, Compreno has so called non-morphological lexemes, such as 
 
 **Merging**
 
-In most cases, the Compreno model treats parts of composite words as separate tokens. It concerns words like ‘торпедообразный &ndash; torpedo-like’ (‘торпедо &ndash; torpedo’ + ‘образный &ndash; like’), ‘антиреволюционный &ndash; anti-revolutionary’ (‘анти &ndash; anti’ + ‘революционный &ndash; revolutionary’), names with numbers (‘Ту-104’), or ordinal numbers written with combinations of a number and its grammatical inflection (‘10-й день &ndash; 10th day’). Such cases are joined in one UD token with the help of the script.
+In most cases, the ABBYY Compreno model treats parts of composite words as separate tokens. It concerns words like ‘торпедообразный &ndash; torpedo-like’ (‘торпедо &ndash; torpedo’ + ‘образный &ndash; like’), ‘антиреволюционный &ndash; anti-revolutionary’ (‘анти &ndash; anti’ + ‘революционный &ndash; revolutionary’), names with numbers (‘Ту-104’), or ordinal numbers written with combinations of a number and its grammatical inflection (‘10-й день &ndash; 10th day’). Such cases are joined in one UD token with the help of the script.
 
 ## The conversion of parts of speech and grammatical features
 
-One can see the information on parts of speech, grammatical categories and features in the [description of the tagset for the GramEval-2020 competition](https://github.com/dialogue-evaluation/GramEval2020/blob/master/UDtagset/UD-Russian_tagset.md).
+One can see the information on parts of speech, grammatical categories and features in a separate [file](https://github.com/comreno-semantics/compreno-corpus/blob/master/Comr2UD_Morth.md).
 
 ## The conversion of the syntactic heads
 
-The syntactic heads are converted into the UD format from the bracket Compreno format. The heads for the punctuation marks are assigned through a special algorithm. In most cases, the syntactic and the semantic heads coincide:
+The syntactic heads are converted into the UD format from the bracket ABBYY Compreno format. The heads for the punctuation marks are assigned through a special algorithm. In most cases, the syntactic and the semantic heads coincide:
 
 >Это означает фактическую отмену запрета на поставки нефти, введенного Ираком 1 декабря.
 >‘It means actual cancellation of the prohibition on oil delivery introduced by Iraq on December 1.’
