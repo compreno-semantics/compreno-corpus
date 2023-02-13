@@ -144,5 +144,7 @@ As we have decided to keep to the UD format here as the one which is better know
 As we have indicated above, main problems of the conversion are bound with the following differences between the formats:
 
 (1) The UD does not reconstruct the ellipted constituents, while Compreno does. As we decided to follow the UD logic here, we had to refuse from the reconstruction of the ellipted nodes, which made the conversion process more complicated. As a consequence, some sentences with the ellipted nodes may contain mistakes as far as heads of the dependencies are concerned;
+
 (2) The same problem is with the dislocated constituents;
+
 (3) Another difference is that the UD regards punctuation signs as heads like other tokens, therefore, we had to assign the heads for the punctuation marks automatically.
